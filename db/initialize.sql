@@ -3,7 +3,7 @@
 CREATE DATABASE doodlegram;
 
 CREATE TABLE users (
-    id BIGINT,
+    id SERIAL,
     username VARCHAR(20) NOT NULL,
     password VARCHAR(30) NOT NULL,
     email VARCHAR(30) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE doodles (
-    id BIGINT,
+    id SERIAL,
     caption VARCHAR(140),
     date_created TIMESTAMP NOT NULL,
     user_id BIGINT REFERENCES users(id),
@@ -20,14 +20,14 @@ CREATE TABLE doodles (
 );
 
 CREATE TABLE follows (
-    follower_id BIGINT REFERENCES users(id),
-    followee_id BIGINT REFERENCES users(id)
+    follower_id SERIAL REFERENCES users(id),
+    followee_id SERIAL REFERENCES users(id)
 );
 
 CREATE TABLE comments (
-    comment_id BIGINT,
-    doodle_id BIGINT REFERENCES doodles(id),
+    comment_id SERIAL,
+    doodle_id SERIAL REFERENCES doodles(id),
     date_created TIMESTAMP NOT NULL,
-    user_id BIGINT REFERENCES users(id),
+    user_id SERIAL REFERENCES users(id),
     PRIMARY KEY(comment_id)
 );
