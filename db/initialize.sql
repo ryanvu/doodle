@@ -5,9 +5,10 @@ CREATE DATABASE doodlegram;
 CREATE TABLE users (
     id SERIAL,
     username VARCHAR(20) NOT NULL,
-    password VARCHAR(30) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     email VARCHAR(30) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    UNIQUE(username, email)
 );
 
 CREATE TABLE doodles (
