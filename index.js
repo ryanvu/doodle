@@ -54,12 +54,13 @@ app.post("/createUser", async (req, res) => {
     const { username, password, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, r1) => {
+    pool.query(`SELECT * FROM users WHERE email = $1 OR username = $2`, [email, username], (err, r1) => {
         if (err) {
             console.log(err);
         } else {
             if (r1.rows.length > 0) {
-                res.status(400).send('This email is already taken')
+                const takenInfo = r1.rows[0];
+                (takenInfo.username === username) ? res.status(400).send('The username is already taken') : res.status(400).send('The email is already taken')
             } else {
                 const query = `INSERT INTO users (username, password, email) VALUES($1, $2, $3) RETURNING *`
                 const values = [username, hashedPassword, email]
